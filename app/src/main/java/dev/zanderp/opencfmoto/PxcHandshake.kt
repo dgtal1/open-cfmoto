@@ -33,6 +33,8 @@ class PxcHandshake(
     /** Rate-limit HU_TIME_SYNC log lines (bike sends ~every 2s). */
     @Volatile private var lastHuTimeSyncLogAt: Long = 0L
     @Volatile private var huTimeSyncCount: Int = 0
+    /** X-Cape / Voge / Griffin never send 0x10600 — push one phone stamp after handshake. */
+    @Volatile private var pushedHuTime: Boolean = false
 
     /**
      * Called when the bike selects a PXC channel on a :10922 socket (CAR_CTRL or CAR_DATA).
@@ -85,6 +87,15 @@ class PxcHandshake(
         val ack = HuQueryTime.ack()
         PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ack.payload).write(out)
         log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} → 0x10451 dateTime=${ack.dateTime}")
+        pushPhoneHuTime(tag, out, "after QUERY_TIME")
+    }
+
+    private fun pushPhoneHuTime(tag: String, out: java.io.OutputStream, reason: String) {
+        if (pushedHuTime) return
+        pushedHuTime = true
+        val ack = HuTimeSync.ack(ByteArray(0))
+        PxcFrame(PxcFrame.CMD_HU_TIME_SYNC_ACK, ack.payload).write(out)
+        log("[$tag] HU_TIME_SYNC push ($reason) → 0x10601 mode=${ack.mode} time=${ack.stamp}")
     }
 
     private fun onHuTimeSync(tag: String, frame: PxcFrame, out: java.io.OutputStream) {
@@ -142,6 +153,7 @@ class PxcHandshake(
         val reply = profile.buildClientInfoReply(json, carHuid, phoneUuid)
         log("[$tag] → CLIENT_INFO reply ${reply.toString().take(180)}…")
         PxcFrame(PxcFrame.CMD_CLIENT_INFO_RLY, reply.toString().toByteArray(Charsets.UTF_8)).write(out)
+        pushPhoneHuTime(tag, out, "after CLIENT_INFO")
     }
 
     private fun onCheckSn(tag: String, frame: PxcFrame, out: java.io.OutputStream) {

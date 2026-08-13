@@ -54,7 +54,12 @@ internal class EcBtpTimeLink(
             return 0
         }
         val candidates = bonded.filter { candidateWorthOpening(it) }
-        log("[EC-BTP] ${bonded.size} bonded, ${candidates.size} serial-service candidate(s) — listen only")
+        val skipped = bonded.filterNot { candidateWorthOpening(it) }
+            .map { runCatching { it.name }.getOrNull() ?: it.address }
+        log("[EC-BTP] ${bonded.size} bonded, ${candidates.size} candidate(s) — listen only")
+        if (skipped.isNotEmpty()) {
+            log("[EC-BTP] skipped (no dash UUID/name): ${skipped.take(8).joinToString()}")
+        }
         candidates.forEach { openGatt(it) }
         return candidates.size
     }
@@ -71,6 +76,8 @@ internal class EcBtpTimeLink(
     }
 
     private fun candidateWorthOpening(device: BluetoothDevice): Boolean {
+        val name = runCatching { device.name }.getOrNull()
+        if (DashClock.nameLooksLikeDash(name)) return true
         val cached: Array<ParcelUuid>? = runCatching { device.uuids }.getOrNull()
         if (cached.isNullOrEmpty()) return true
         return cached.any { SERVICE_UUIDS.contains(it.uuid) }

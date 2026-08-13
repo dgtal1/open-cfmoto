@@ -294,6 +294,9 @@ private fun basePhoneClientInfo(huid: String?, phoneUuid: String, supportFunctio
         // 0x10601 aggressively (Zontes/Voge → 00:00) even when the cluster clock was already fine.
         // We still body-ack every inbound 0x10600 (see HuTimeSync) so Morini/QJ never see empty→1970.
         put("supportSyncCorrectTime", false)
+        // Bike CLIENT_INFO reports currentHUTime (often ms since its own midnight — 1970 00:xx).
+        // Echoing that keeps the broken clock. Send phone local ms-since-midnight instead.
+        put("currentHUTime", DashClock.millisSinceLocalMidnight())
         put("appVersionFingerPrint", "opencfmoto-poc")
     }
 
