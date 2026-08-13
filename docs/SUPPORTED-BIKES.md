@@ -13,7 +13,7 @@ QR code, OpenCfMoto can try to connect. No QR → this app cannot join that dash
 Stock Carbit Ride / brand companion apps (MotoFun, etc.) are separate. OpenCfMoto uses the same QR
 path to project **wireless Android Auto** (not Apple CarPlay).
 
-Community reports welcome in [Discord](https://discord.gg/xRt5yZy2U) so we can keep this list current.
+Community reports welcome in [Discord](https://discord.gg/KNTjJhmFZ6) so we can keep this list current.
 
 ### Brands (supported & welcome)
 

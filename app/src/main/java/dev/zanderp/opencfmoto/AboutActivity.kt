@@ -60,7 +60,7 @@ class AboutActivity : AppCompatActivity() {
     companion object {
         private const val URL_WEBSITE = "https://alexandru.rocks"
         private const val URL_GITHUB = "https://github.com/zanderp/open-cfmoto"
-        private const val URL_DISCORD = "https://discord.gg/xRt5yZy2U"
+        private const val URL_DISCORD = "https://discord.gg/KNTjJhmFZ6"
         const val URL_KOFI = "https://ko-fi.com/alexandrupopa"
         private const val URL_NOTICE =
             "https://github.com/zanderp/open-cfmoto/blob/main/NOTICE"

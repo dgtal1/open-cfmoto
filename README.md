@@ -14,11 +14,11 @@ every ride — all from an Android phone in your pocket.
 
 <br/>
 
-[![Join the Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/xRt5yZy2U)
+[![Join the Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/KNTjJhmFZ6)
 [![Downloads](https://img.shields.io/github/downloads/zanderp/open-cfmoto/total?style=for-the-badge&label=Downloads)](https://github.com/zanderp/open-cfmoto/releases)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20the%20project-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/alexandrupopa)
 
-**💬 Questions, logs, or a new bike to add? [Join the Open CFMoto Discord](https://discord.gg/xRt5yZy2U).**
+**💬 Questions, logs, or a new bike to add? [Join the Open CFMoto Discord](https://discord.gg/KNTjJhmFZ6).**
 
 <br/>
 
@@ -149,7 +149,7 @@ unconfirmed, try if QR present) · **Kove** (Thinkerride SoftAP experimental —
 Usually **no** projection QR (won’t work unless your unit has one anyway): 800MT Sport · 800MT
 Touring · 450SR World Champion Edition · 700CL‑X · PAPIO.
 
-Report a working bike that isn’t listed in **[Discord](https://discord.gg/xRt5yZy2U)**.
+Report a working bike that isn’t listed in **[Discord](https://discord.gg/KNTjJhmFZ6)**.
 
 ---
 
@@ -636,19 +636,19 @@ OpenCfMoto routes and **Connect** for Maps/Waze Android Auto.
 | **Didn't resume on its own** after a long stop | Enable **Seamless resume** (Setup ▸ Startup & recovery → *Display over other apps*) so the app can re-project with the screen off; otherwise tap the **“Bike reconnected”** notification. |
 
 **Getting help:** reproduce the issue, then **Logs ▸ Share** or **Setup → Report a problem**, and drop
-the file in **[Discord](https://discord.gg/xRt5yZy2U)**.
+the file in **[Discord](https://discord.gg/KNTjJhmFZ6)**.
 
 ---
 
 ## 💬 Community
 
 Got a question, a log to share, or a bike you'd like supported? **Join the
-[Open CFMoto Discord](https://discord.gg/xRt5yZy2U).** It's the fastest place to get help, compare
+[Open CFMoto Discord](https://discord.gg/KNTjJhmFZ6).** It's the fastest place to get help, compare
 notes across bikes/phones, share captures that help add new dash profiles, and hear about new releases.
 
 <div align="center">
 
-[![Join the Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/xRt5yZy2U)
+[![Join the Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/KNTjJhmFZ6)
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20the%20project-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/alexandrupopa)
 
@@ -753,6 +753,6 @@ turned off under Setup → Privacy — details in **[PRIVACY.md](PRIVACY.md)**.
 
 <div align="center">
 
-<sub>Built with ❤️ for the CFMoto community — [join us on Discord](https://discord.gg/xRt5yZy2U).</sub>
+<sub>Built with ❤️ for the CFMoto community — [join us on Discord](https://discord.gg/KNTjJhmFZ6).</sub>
 
 </div>

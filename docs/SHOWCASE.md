@@ -2,7 +2,7 @@
 
 Community photos of **OpenCfMoto / Android Auto** on real EasyConnect dashes.
 Full model list: [SUPPORTED-BIKES.md](SUPPORTED-BIKES.md). Send more in Discord
-[`#confirmed-working`](https://discord.gg/xRt5yZy2U) (model + year + photo).
+[`#confirmed-working`](https://discord.gg/KNTjJhmFZ6) (model + year + photo).
 
 Photos are curated from Discord (caption / thread context). Credits under each shot.
 
