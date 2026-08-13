@@ -246,7 +246,7 @@ class AndroidAutoService : Service() {
         startReceiver()
         if (receiver == null) { resumeFailedFallback(); return }
 
-        BikeLink.beginHandoff()
+        BikeLink.beginHandoff(this)
         AaVideoBridge.onSteadyVideo = {
             AaVideoBridge.onSteadyVideo = null
             resumeSteadyReached = true
@@ -626,8 +626,8 @@ class AndroidAutoService : Service() {
         try { ProjectionHolder.projection?.stop() } catch (_: Exception) {}
         ProjectionHolder.projection = null
         try { ProjectionService.stop(applicationContext) } catch (_: Exception) {}
-        try { BikeWifi.leave(applicationContext, LogBus::log) } catch (_: Exception) {}
-        try { BikeWifiP2p.stop(LogBus::log) } catch (_: Exception) {}
+        try { DashClockBle.stop() } catch (_: Exception) {}
+        try { BikeWifi.releaseSession(applicationContext, LogBus::log) } catch (_: Exception) {}
         ConnectionState.set(Phase.STOPPED, "")
         // Bank the trip unless the map UI is still bound (phone preview); onDestroy syncs again.
         try { TripAutoLog.sync(this) } catch (_: Exception) {}

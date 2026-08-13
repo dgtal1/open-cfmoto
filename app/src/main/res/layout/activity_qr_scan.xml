@@ -36,6 +36,14 @@
             android:layout_marginTop="4dp"
             android:text="@string/garage_enter_wi_fi_manually"
             android:textColor="#FFB74D" />
+
+        <Button
+            android:id="@+id/btn_qr_photo"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/qr_from_photo"
+            android:textColor="#FFB74D" />
     </LinearLayout>
 
     <LinearLayout

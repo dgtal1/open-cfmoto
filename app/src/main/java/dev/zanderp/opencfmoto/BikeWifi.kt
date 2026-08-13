@@ -296,6 +296,30 @@ object BikeWifi {
 
     private const val FRESH_SCAN_US = 30_000_000L  // 30s
 
+    /**
+     * End the session Wi-Fi: full teardown, or [park] (stay associated) when the rider
+     * enabled Setup → keep bike Wi-Fi after disconnect.
+     */
+    fun releaseSession(context: Context, log: (String) -> Unit) {
+        if (AppSettings.keepWifiAfterDisconnect(context)) {
+            park(context, log)
+            BikeWifiP2p.park(log)
+        } else {
+            leave(context, log)
+            BikeWifiP2p.stop(log)
+        }
+    }
+
+    /**
+     * Keep the SoftAP association (callback stays registered) but unbind the process so
+     * cellular / maps work. Some dashes forget the clock the moment the group drops.
+     */
+    fun park(context: Context, log: (String) -> Unit) {
+        val cm = this.cm ?: (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        unbindProcess(cm)
+        log("Wi-Fi kept after disconnect (dash clock) — process unbound, SoftAP still associated")
+    }
+
     fun leave(context: Context, log: (String) -> Unit) {
         active = false
         handler.removeCallbacksAndMessages(null)

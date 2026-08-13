@@ -71,6 +71,7 @@ class PxcHandshake(
             // First-class: never empty-ack 0x10600 (→ 1970 / 00:00 on Morini/Voge/QJ).
             // Handled here so it cannot regress via profile / uncommitted-only paths.
             PxcFrame.CMD_HU_TIME_SYNC -> onHuTimeSync(tag, frame, out)
+            PxcFrame.CMD_HU_QUERY_TIME -> onHuQueryTime(tag, frame, out)
             else -> {
                 if (!profile.handleUnknownControl(tag, frame, out, log)) {
                     log("[$tag] cmd=0x${frame.cmd.toUInt().toString(16)} (${PxcFrame.nameOf(frame.cmd)}) " +
@@ -78,6 +79,12 @@ class PxcHandshake(
                 }
             }
         }
+    }
+
+    private fun onHuQueryTime(tag: String, frame: PxcFrame, out: java.io.OutputStream) {
+        val ack = HuQueryTime.ack()
+        PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ack.payload).write(out)
+        log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} → 0x10451 dateTime=${ack.dateTime}")
     }
 
     private fun onHuTimeSync(tag: String, frame: PxcFrame, out: java.io.OutputStream) {

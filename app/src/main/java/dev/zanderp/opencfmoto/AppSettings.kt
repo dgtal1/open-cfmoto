@@ -28,6 +28,8 @@ object AppSettings {
     private const val KEY_INCLUDE_SECRETS = "include_secrets_in_logs"
     private const val KEY_TRANSPORT = "wifi_transport"
     private const val KEY_ANON_TELEMETRY = "anonymous_telemetry"
+    private const val KEY_BT_CLOCK = "bluetooth_clock_sync"
+    private const val KEY_KEEP_WIFI = "keep_wifi_after_disconnect"
 
     private fun prefs(ctx: Context) =
         ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -78,6 +80,19 @@ object AppSettings {
      * Anonymous install ping + crash/error upload (random UUID only). Default **on**;
      * rider can turn off in Setup → Privacy. See PRIVACY.md.
      */
+    /** Answer dash clock over BLE (EC-BTP). Off by default — bike must already be paired. */
+    fun bluetoothClockSync(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_BT_CLOCK, false)
+    fun setBluetoothClockSync(ctx: Context, on: Boolean) =
+        prefs(ctx).edit().putBoolean(KEY_BT_CLOCK, on).apply()
+
+    /**
+     * Stay associated to the bike SoftAP / Wi-Fi Direct after Stop so some dashes keep the clock.
+     * Process is unbound so cellular/maps still work. Off by default.
+     */
+    fun keepWifiAfterDisconnect(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_KEEP_WIFI, false)
+    fun setKeepWifiAfterDisconnect(ctx: Context, on: Boolean) =
+        prefs(ctx).edit().putBoolean(KEY_KEEP_WIFI, on).apply()
+
     fun anonymousTelemetry(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_ANON_TELEMETRY, true)
     fun setAnonymousTelemetry(ctx: Context, on: Boolean) {
         prefs(ctx).edit().putBoolean(KEY_ANON_TELEMETRY, on).apply()

@@ -3,6 +3,7 @@
 // Part of OpenCfMoto. Free software under the GNU AGPL v3 or later; see LICENSE and NOTICE.
 package dev.zanderp.opencfmoto
 
+import android.content.Context
 import android.net.Network
 import java.net.Inet4Address
 
@@ -20,6 +21,7 @@ import java.net.Inet4Address
  */
 object BikeLink {
     @Volatile var prober: EasyConnProber? = null
+    @Volatile private var appContext: Context? = null
 
     // ---- Android Auto → bike start coordination (parallel-startup gate) ----
     // The two slow steps used to be serial: wait for AA "steady video", THEN pop the Wi-Fi join
@@ -38,7 +40,8 @@ object BikeLink {
 
     /** Reset the gate at the start of a fresh Android Auto connection attempt. */
     @Synchronized
-    fun beginHandoff() {
+    fun beginHandoff(context: Context? = null) {
+        if (context != null) appContext = context.applicationContext
         aaVideoSteady = false
         bikeNetwork = null
         networkReady = false
@@ -77,6 +80,7 @@ object BikeLink {
         proberStarted = true
         LogBus.log("→ AA video + bike Wi-Fi both ready — starting EasyConn PXC flow …")
         ConnectionState.set(Phase.PXC_CONNECTING)
+        appContext?.let { DashClockBle.start(it) }
         try {
             p.start(bikeNetwork, gatewayOverride = p2pGatewayIp, bindIpOverride = p2pBindIp)
         } catch (e: Exception) {
@@ -109,6 +113,7 @@ object BikeLink {
         bikeNetwork = network
         networkReady = true
         proberStarted = true
+        appContext?.let { DashClockBle.start(it) }
         try {
             p.start(network)
         } catch (e: Exception) {

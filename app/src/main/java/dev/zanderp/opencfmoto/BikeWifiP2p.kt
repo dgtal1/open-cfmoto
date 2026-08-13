@@ -399,6 +399,14 @@ object BikeWifiP2p {
         onFailed(reason)
     }
 
+    /** Stay in the Wi-Fi Direct group (dash clock) — do not [removeGroup]. */
+    fun park(log: (String) -> Unit) {
+        active = false
+        connectIssued = false
+        cancelTimeout()
+        log("$TAG parked — group kept (keep Wi-Fi after disconnect)")
+    }
+
     fun stop(log: (String) -> Unit) {
         active = false
         connected = false

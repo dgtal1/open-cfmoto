@@ -19,6 +19,7 @@ Draft locales ship for Discord community languages:
 | `values-nl/` | Nederlands |
 | `values-hu/` | Magyar |
 | `values-tr/` | Türkçe |
+| `values-ko/` | 한국어 |
 
 ## How to improve a translation
 

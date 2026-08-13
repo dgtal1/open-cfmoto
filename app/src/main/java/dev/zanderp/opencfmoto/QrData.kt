@@ -247,6 +247,9 @@ data class QrData(
                     t.contains("color:", ignoreCase = true) && t.contains("vin:", ignoreCase = true) ->
                     return "that QR is bike info (color/VIN), not Wi‑Fi pairing — open MotoPlay / EasyConnect / MotoFun QR"
                 t.contains("carbit.com", ignoreCase = true) &&
+                    t.contains("downsdk", ignoreCase = true) ->
+                    return "that is the Carbit app-download QR, not pairing — open MotoPlay / EasyConnect so the Wi-Fi QR (SSID + password) stays on screen"
+                t.contains("carbit.com", ignoreCase = true) &&
                     !t.contains("ssid=", ignoreCase = true) &&
                     (t.contains("action=128", ignoreCase = true) || t.contains("bm=", ignoreCase = true)) ->
                     return "this dash joins your phone hotspot — turn on Android hotspot with the SSID/password shown on the dash, then Connect"

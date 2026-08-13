@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
             try { GpxSession.clear() } catch (_: Exception) {}
             MapInputBridge.clear()
         }
-        BikeLink.beginHandoff()
+        BikeLink.beginHandoff(this)
     }
 
     /** Start the Android Auto → bike projection for [qr]. Shared by the one-tap Connect reconnect
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
             // so the bike is never contacted before AA has frames to serve. These callbacks fire against
             // process-global state (applicationContext + BikeLink.prober), NOT this activity: launching
             // Google AA can destroy/recreate MainActivity mid-startup and the hand-off must still finish.
-            BikeLink.beginHandoff()
+            BikeLink.beginHandoff(this)
             AaVideoBridge.onSteadyVideo = {
                 AaVideoBridge.onSteadyVideo = null
                 ConnectionState.set(Phase.AA_VIDEO_LIVE)
@@ -1393,8 +1393,8 @@ class MainActivity : AppCompatActivity() {
         ProjectionHolder.projection = null
         try { GpxSession.clear() } catch (_: Exception) {}
         try { ProjectionService.stop(this) } catch (e: Exception) { log("projection stop: $e") }
-        try { BikeWifi.leave(this, ::log) } catch (e: Exception) { log("wifi leave: $e") }
-        try { BikeWifiP2p.stop(::log) } catch (e: Exception) { log("p2p stop: $e") }
+        try { DashClockBle.stop() } catch (_: Exception) {}
+        try { BikeWifi.releaseSession(this, ::log) } catch (e: Exception) { log("wifi leave: $e") }
         ConnectionState.set(Phase.STOPPED, "")
     }
 
