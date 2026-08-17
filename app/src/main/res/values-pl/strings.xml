@@ -336,7 +336,7 @@
     <string name="dash_record_ride">Nagrywaj jazdę</string>
     <string name="dash_follow">Podążaj</string>
     <string name="dash_heading_up">Kieruję się w górę</string>
-    <string name="dash_close">Zamknuj</string>
+    <string name="dash_close">Zamknij</string>
     <string name="row_saved_place_name_e_g_home">Nazwa (np. Dom)</string>
     <string name="row_saved_place_address_or_place">Adres lub miejsce</string>
     <string name="dash_cancel">Anuluj</string>
@@ -346,7 +346,7 @@
     <string name="conn_joining_wifi">Łączę się z Wi-Fi motocykla…</string>
     <string name="conn_pxc_connecting">Łączę z ekranem motocykla…</string>
     <string name="conn_streaming">Połączono — projekcja na ekran motocykla</string>
-    <string name="conn_mirroring">Przsyłanie ekranu telefonu na ekran motocykla</string>
+    <string name="conn_mirroring">Przesyłanie ekranu telefonu na ekran motocykla</string>
     <string name="conn_reconnecting">Połączenie przerwane — łączę ponownie…</string>
     <string name="conn_waiting_for_bike">Motocykl poza zasięgiem — czekam…</string>
     <string name="conn_stopped">Zatrzymany</string>
