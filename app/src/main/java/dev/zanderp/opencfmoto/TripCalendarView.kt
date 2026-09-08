@@ -6,6 +6,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -162,54 +164,70 @@ fun TripCalendarView(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Main grid with Windows 11 style depth/scale animation
+                // OUTER ANIMATION: Depth scale transition for view state changes (Zoom In / Zoom Out)
                 AnimatedContent(
                     targetState = viewState,
                     transitionSpec = {
                         val isZoomingIn = initialState.ordinal > targetState.ordinal
                         if (isZoomingIn) {
-                            // Zooming IN
                             (fadeIn(tween(250)) + scaleIn(initialScale = 0.85f, animationSpec = tween(250))) togetherWith
                                     (fadeOut(tween(250)) + scaleOut(targetScale = 1.15f, animationSpec = tween(250)))
                         } else {
-                            // Zooming OUT
                             (fadeIn(tween(250)) + scaleIn(initialScale = 1.15f, animationSpec = tween(250))) togetherWith
                                     (fadeOut(tween(250)) + scaleOut(targetScale = 0.85f, animationSpec = tween(250)))
                         }
                     },
                     label = "calendar_depth_animation"
                 ) { state ->
-                    when (state) {
-                        CalendarViewState.DAYS -> {
-                            DaysGrid(
-                                displayedCalendar = displayedCalendar,
-                                tripDays = tripDays,
-                                onDayClick = { dayMs -> onDaySelected(dayMs) }
-                            )
-                        }
-                        CalendarViewState.MONTHS -> {
-                            MonthsGrid(
-                                displayedCalendar = displayedCalendar,
-                                tripMonths = tripMonths,
-                                onMonthSelected = { monthIndex ->
-                                    val cal = displayedCalendar.clone() as Calendar
-                                    cal.set(Calendar.MONTH, monthIndex)
-                                    displayedCalendar = cal
-                                    viewState = CalendarViewState.DAYS
-                                }
-                            )
-                        }
-                        CalendarViewState.YEARS -> {
-                            YearsGrid(
-                                displayedCalendar = displayedCalendar,
-                                tripYears = tripYears,
-                                onYearSelected = { year ->
-                                    val cal = displayedCalendar.clone() as Calendar
-                                    cal.set(Calendar.YEAR, year)
-                                    displayedCalendar = cal
-                                    viewState = CalendarViewState.MONTHS
-                                }
-                            )
+                    // INNER ANIMATION: Horizontal slide transition for navigating time within the same view state
+                    AnimatedContent(
+                        targetState = displayedCalendar.timeInMillis,
+                        transitionSpec = {
+                            if (targetState > initialState) {
+                                // Moving forward in time (slide left)
+                                (slideInHorizontally(animationSpec = tween(250)) { width -> width } + fadeIn(tween(250))) togetherWith
+                                        (slideOutHorizontally(animationSpec = tween(250)) { width -> -width } + fadeOut(tween(250)))
+                            } else {
+                                // Moving backward in time (slide right)
+                                (slideInHorizontally(animationSpec = tween(250)) { width -> -width } + fadeIn(tween(250))) togetherWith
+                                        (slideOutHorizontally(animationSpec = tween(250)) { width -> width } + fadeOut(tween(250)))
+                            }
+                        },
+                        label = "calendar_slide_animation"
+                    ) { timeInMillis ->
+                        val animatedCalendar = Calendar.getInstance().apply { this.timeInMillis = timeInMillis }
+                        when (state) {
+                            CalendarViewState.DAYS -> {
+                                DaysGrid(
+                                    displayedCalendar = animatedCalendar,
+                                    tripDays = tripDays,
+                                    onDayClick = { dayMs -> onDaySelected(dayMs) }
+                                )
+                            }
+                            CalendarViewState.MONTHS -> {
+                                MonthsGrid(
+                                    displayedCalendar = animatedCalendar,
+                                    tripMonths = tripMonths,
+                                    onMonthSelected = { monthIndex ->
+                                        val cal = animatedCalendar.clone() as Calendar
+                                        cal.set(Calendar.MONTH, monthIndex)
+                                        displayedCalendar = cal
+                                        viewState = CalendarViewState.DAYS
+                                    }
+                                )
+                            }
+                            CalendarViewState.YEARS -> {
+                                YearsGrid(
+                                    displayedCalendar = animatedCalendar,
+                                    tripYears = tripYears,
+                                    onYearSelected = { year ->
+                                        val cal = animatedCalendar.clone() as Calendar
+                                        cal.set(Calendar.YEAR, year)
+                                        displayedCalendar = cal
+                                        viewState = CalendarViewState.MONTHS
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -259,16 +277,24 @@ private fun CalendarHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = title,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.text_primary),
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { onHeaderClick() }
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-        )
+        // Crossfade animation for the title text
+        AnimatedContent(
+            targetState = title,
+            transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(250)) },
+            label = "header_title_animation"
+        ) { animatedTitle ->
+            Text(
+                text = animatedTitle,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.text_primary),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onHeaderClick() }
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            )
+        }
+
         Row {
             IconButton(onClick = onPrevClick) {
                 Text("‹", fontSize = 24.sp, fontWeight = FontWeight.Medium, color = colorResource(id = R.color.text_primary))
@@ -286,7 +312,7 @@ private fun DaysGrid(
     tripDays: Set<Long>,
     onDayClick: (Long) -> Unit
 ) {
-    // Automatically localized day of week abbreviations (Monday-Sunday)
+    // Automatically localized day of week abbreviations
     val daysOfWeek = remember {
         DayOfWeek.values().map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
     }
@@ -478,57 +504,66 @@ private fun CalendarFooter(
     displayedCalendar: Calendar,
     viewState: CalendarViewState
 ) {
-    val activeTrips = remember(trips, displayedCalendar, viewState) {
-        trips.filter { trip ->
-            val cal = Calendar.getInstance().apply { timeInMillis = trip.start }
-            val matchYear = cal.get(Calendar.YEAR) == displayedCalendar.get(Calendar.YEAR)
-            when (viewState) {
-                CalendarViewState.DAYS -> matchYear && cal.get(Calendar.MONTH) == displayedCalendar.get(Calendar.MONTH)
-                else -> matchYear
+    // Crossfade animation for the stats to keep up with sliding grids
+    AnimatedContent(
+        targetState = displayedCalendar.timeInMillis,
+        transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(250)) },
+        label = "footer_animation"
+    ) { timeInMillis ->
+        val animatedCalendar = Calendar.getInstance().apply { this.timeInMillis = timeInMillis }
+
+        val activeTrips = remember(trips, animatedCalendar, viewState) {
+            trips.filter { trip ->
+                val cal = Calendar.getInstance().apply { this.timeInMillis = trip.start }
+                val matchYear = cal.get(Calendar.YEAR) == animatedCalendar.get(Calendar.YEAR)
+                when (viewState) {
+                    CalendarViewState.DAYS -> matchYear && cal.get(Calendar.MONTH) == animatedCalendar.get(Calendar.MONTH)
+                    else -> matchYear
+                }
             }
         }
-    }
 
-    val ridesCount = activeTrips.size
-    val totalKm = activeTrips.sumOf { it.distanceKm }
-    val totalSeconds = activeTrips.sumOf { it.movingTimeMs } / 1000
-    val hours = totalSeconds / 3600
-    val minutes = (totalSeconds % 3600) / 60
+        val ridesCount = activeTrips.size
+        val totalKm = activeTrips.sumOf { it.distanceKm }
+        val totalSeconds = activeTrips.sumOf { it.movingTimeMs } / 1000
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        if (ridesCount > 0) {
-            Text(
-                text = pluralStringResource(
-                    id = R.plurals.trips_calendar_stats,
-                    count = ridesCount,
-                    ridesCount, totalKm, hours, minutes
-                ),
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Bold,
-                color = colorResource(id = R.color.text_primary)
-            )
-        } else {
-            Text(
-                text = stringResource(id = R.string.trips_calendar_no_rides),
-                fontSize = 13.sp,
-                color = colorResource(id = R.color.text_secondary)
-            )
-        }
-
-        val todayCal = Calendar.getInstance()
-        val isCurrentMonth = displayedCalendar.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR) &&
-                displayedCalendar.get(Calendar.MONTH) == todayCal.get(Calendar.MONTH)
-
-        if (!isCurrentMonth && viewState == CalendarViewState.DAYS) {
-            val latestTrip = trips.maxByOrNull { it.start }
-            if (latestTrip != null) {
-                val dateStr = SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(Date(latestTrip.start))
-                Spacer(modifier = Modifier.height(4.dp))
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            if (ridesCount > 0) {
                 Text(
-                    text = stringResource(id = R.string.trips_calendar_last_trip, dateStr),
-                    fontSize = 11.sp,
+                    text = pluralStringResource(
+                        id = R.plurals.trips_calendar_stats,
+                        count = ridesCount,
+                        ridesCount, totalKm, hours, minutes
+                    ),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.text_primary)
+                )
+            } else {
+                Text(
+                    text = stringResource(id = R.string.trips_calendar_no_rides),
+                    fontSize = 13.sp,
                     color = colorResource(id = R.color.text_secondary)
                 )
+            }
+
+            val todayCal = Calendar.getInstance()
+            val isCurrentMonth = animatedCalendar.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR) &&
+                    animatedCalendar.get(Calendar.MONTH) == todayCal.get(Calendar.MONTH)
+
+            if (!isCurrentMonth && viewState == CalendarViewState.DAYS) {
+                val latestTrip = trips.maxByOrNull { it.start }
+                if (latestTrip != null) {
+                    val dateStr = SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(Date(latestTrip.start))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(id = R.string.trips_calendar_last_trip, dateStr),
+                        fontSize = 11.sp,
+                        color = colorResource(id = R.color.text_secondary)
+                    )
+                }
             }
         }
     }
