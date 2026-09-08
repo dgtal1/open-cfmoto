@@ -46,7 +46,7 @@
     <string name="buttons_starting_navigation_from_a_handlebar_button_whil">Rozpoczęcie nawigacji za pomocą przycisku na kierownicy, gdy aplikacja znajduje się w kieszeni, wymaga uprawnienia „Wyświetlaj nad innymi aplikacjami”. Bez tego użyj zamiast tego pola „Nawiguj do…” w aplikacji.</string>
     <string name="buttons_enable_display_over_other_apps">Włącz opcję „Wyświetlaj nad innymi aplikacjami”</string>
     <string name="setup_aa_dpi">Rozmiar tekstu Android Auto (DPI)</string>
-    <string name="setup_aa_dpi_desc">Opcja 'Auto' używa profilu motocykla. Wyższe DPI powoduje, że Mapy / AA są większe (użyteczne gdy czcionka ekranu motocykla jest zbyt mała).</string>
+    <string name="setup_aa_dpi_desc">Opcja \'Auto\' używa profilu motocykla. Wyższe DPI powoduje, że Mapy / AA są większe (użyteczne gdy czcionka ekranu motocykla jest zbyt mała).</string>
     <string name="setup_aa_dpi_auto">Auto</string>    
     <string name="controls_controls">Sterowanie</string>
     <string name="controls_drive_android_auto_without_touching_the_dash_typ">Steruj Android Auto bez dotykania deski rozdzielczej: wpisz miejsce docelowe, użyj klawiatury ekranowej lub zamapuj przyciski na kierownicy motocyklu.</string>
@@ -215,7 +215,7 @@
     <string name="setup_balanced">Zrównoważone</string>
     <string name="setup_sharper">Wyostrzone</string>
     <string name="setup_mirror_orientation">Układ ekranu (mirror)</string>
-    <string name="setup_mirror_orientation_desc">Podczas projekcji ekranu twojego telefonu, zablokuj telefon, aby wypełnić ekran motocykla. Opcja 'Dopasuj' używa ostatnio ustalonej orientaji ekranu motocykla (szeroki ekran TFT → oritnacja pozioma). Opcja 'Jak telefon' podąża za bieżącą orientacją ekranu telefonu.</string>    
+    <string name="setup_mirror_orientation_desc">Podczas projekcji ekranu twojego telefonu, zablokuj telefon, aby wypełnić ekran motocykla. Opcja \'Dopasuj\' używa ostatnio ustalonej orientaji ekranu motocykla (szeroki ekran TFT → oritnacja pozioma). Opcja \'Jak telefon\' podąża za bieżącą orientacją ekranu telefonu.</string>    
     <string name="setup_match_dash">Dopasuj</string>
     <string name="setup_follow_phone">Jak telefon</string>
     <string name="setup_screen_fit">Dopasowanie ekranu</string>
@@ -277,7 +277,7 @@
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">Jeśli ekran motocykla się rozłączy lub projekcja się zatrzyma, podłącz ponownie automatycznie — nie trzeba robić rozłącz/połącz ponownie.</string>
 
     <string name="setup_bluetooth_clock">Ustaw zegar ekranu poprzez Bluetooth (eksperymentalne)</string>
-    <string name="setup_bluetooth_clock_desc">Niektóre ekrany proszą o podanie czasu przez Bluetooth zamaist Wi-Fi, i ustawiają 00:00 gdy operacja się nie powiedzie. Najpier sparuj motocykl w ustawieniach Bluetooth w Androidzie. 'Wyłączony' domyślnie — apka poda czas tylko gdy ekran wyśle żądanie swoim protokołem.</string>
+    <string name="setup_bluetooth_clock_desc">Niektóre ekrany proszą o podanie czasu przez Bluetooth zamaist Wi-Fi, i ustawiają 00:00 gdy operacja się nie powiedzie. Najpier sparuj motocykl w ustawieniach Bluetooth w Androidzie. \'Wyłączony\' domyślnie — apka poda czas tylko gdy ekran wyśle żądanie swoim protokołem.</string>
     <string name="setup_clock_lab">Zegar (EKSPERYMENTALNE)</string>
     <string name="setup_clock_lab_desc">One tester pack for every clock experiment — Wi‑Fi query/sync, Bluetooth listen (ZT / EC-BTP), stay-on-bike-Wi‑Fi. Defaults match Latest 2.0.13 (empty 0x10451, echo 0x10600, BLE off). Pick a combo, Connect once, Share Logs in Discord #clock-issue. Do not leave a combo on for daily riding.</string>
     <string name="setup_clock_lab_bt">Nasłuch Bluetooth</string>
